@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <title>Подтверждение</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      height: 100vh;
+      background: radial-gradient(circle at center, #0a0a12 0%, #1a1a2e 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Orbitron', 'Segoe UI', sans-serif;
+      overflow: hidden;
+      position: relative;
+    }
+
+    #particles {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .card {
+      background: linear-gradient(135deg, rgba(28, 27, 41, 0.9), rgba(40, 39, 61, 0.8));
+      backdrop-filter: blur(12px);
+      padding: 60px 48px 68px;
+      border-radius: 32px;
+      box-shadow: 0 0 50px rgba(168, 85, 247, 0.5), inset 0 0 20px rgba(168, 85, 247, 0.2);
+      text-align: center;
+      width: 420px;
+      color: #e0e0ff;
+      position: relative;
+      z-index: 1;
+      transform-style: preserve-3d;
+      transition: transform 0.3s ease;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      background: linear-gradient(45deg, #a855f7, #7c3aed, #a855f7);
+      border-radius: 36px;
+      z-index: -1;
+      filter: blur(8px);
+      opacity: 0.7;
+      animation: glowPulse 3s ease-in-out infinite;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% { opacity: 0.7; }
+      50% { opacity: 0.3; }
+    }
+
+    .card h2 {
+      font-size: 32px;
+      color: #d4aaff;
+      margin-bottom: 48px;
+      text-shadow: 0 0 15px #b57aff, 0 0 30px #7c3aed;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .card h2::after {
+      content: '';
+      position: absolute;
+      bottom: -12px;
+      left: 50%;
+      width: 60%;
+      height: 2px;
+      background: linear-gradient(to right, transparent, #a855f7, transparent);
+      transform: translateX(-50%);
+    }
+
+    .checkbox-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 20px;
+      background: linear-gradient(145deg, #2c2b3f, #1e1d33);
+      border-radius: 24px;
+      padding: 18px 28px;
+      cursor: pointer;
+      border: 3px solid transparent;
+      box-shadow: 0 0 20px rgba(168, 85, 247, 0.2), inset 0 0 10px rgba(168, 85, 247, 0.1);
+      transition: all 0.4s ease;
+      position: relative;
+      overflow: hidden;
+      width: fit-content;
+      margin: 0 auto;
+    }
+
+    .checkbox-wrap::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, rgba(168, 85, 247, 0.3), transparent);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .checkbox-wrap:hover::before {
+      opacity: 1;
+    }
+
+    .checkbox-wrap:hover {
+      border-color: #c084fc;
+      box-shadow: 0 0 30px #b57aff;
+      background: linear-gradient(145deg, #3f3a7a, #2f2a5e);
+      transform: translateY(-4px);
+    }
+
+    .checkbox-wrap:active {
+      transform: scale(0.95);
+    }
+
+    .checkbox {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: 3px solid #a78bfa;
+      background: #1f1e38;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: inset 0 0 8px #7c63e8, 0 0 10px rgba(168, 85, 247, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .checkbox.checked {
+      background: linear-gradient(135deg, #a855f7, #d8b4fe);
+      border-color: #d8b4fe;
+      box-shadow: 0 0 20px #d8b4fe, inset 0 0 12px #c084fc;
+      animation: pulseCheck 0.6s ease;
+    }
+
+    @keyframes pulseCheck {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    .checkmark {
+      width: 16px;
+      height: 9px;
+      border-left: 4.5px solid white;
+      border-bottom: 4.5px solid white;
+      transform: rotate(-45deg) scale(0.8);
+      opacity: 0;
+      transition: all 0.4s ease;
+      filter: drop-shadow(0 0 2px #fff);
+      position: relative;
+      top: 1px;
+    }
+
+    .checkbox.checked .checkmark {
+      opacity: 1;
+      transform: rotate(-45deg) scale(1.15);
+    }
+
+    .label {
+      font-size: 22px;
+      font-weight: 600;
+      color: #e6dbff;
+      letter-spacing: 0.03em;
+      text-shadow: 0 0 10px #a378ff;
+      transition: all 0.3s ease;
+    }
+
+    .checkbox-wrap:hover .label {
+      color: #ffffff;
+      text-shadow: 0 0 15px #c084fc;
+    }
+
+    .button {
+      display: inline-block;
+      margin-top: 32px;
+      padding: 16px 32px;
+      background: linear-gradient(135deg, #a855f7, #7c3aed);
+      border-radius: 12px;
+      border: none;
+      color: #ffffff;
+      font-size: 20px;
+      font-weight: 600;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      box-shadow: 0 0 25px rgba(168, 85, 247, 0.6);
+      position: relative;
+      overflow: hidden;
+      transition: all 0.4s ease;
+    }
+
+    .button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .button:hover::before {
+      left: 100%;
+    }
+
+    .button:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 0 40px #a855f7;
+      background: linear-gradient(135deg, #c084fc, #9d4edd);
+    }
+
+    .button:active {
+      transform: scale(0.95);
+    }
+
+    .status {
+      margin-top: 32px;
+      font-size: 18px;
+      font-weight: 500;
+      color: #c084fc;
+      opacity: 0;
+      transition: opacity 0.4s ease;
+      min-height: 26px;
+      letter-spacing: 0.02em;
+      text-shadow: 0 0 10px #c084fc;
+    }
+
+    .status.visible {
+      opacity: 1;
+    }
+
+    .status.success {
+      color: #4ade80;
+      text-shadow: 0 0 15px #4ade80;
+      font-weight: 700;
+    }
+
+    @media (max-width: 460px) {
+      .card {
+        width: 90%;
+        padding: 48px 36px 56px;
+      }
+
+      .card h2 {
+        font-size: 28px;
+        margin-bottom: 40px;
+      }
+
+      .checkbox-wrap {
+        padding: 16px 24px;
+        gap: 16px;
+      }
+
+      .checkbox {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        border-width: 2.8px;
+      }
+
+      .checkmark {
+        width: 14px;
+        height: 8px;
+        border-left-width: 4px;
+        border-bottom-width: 4px;
+      }
+
+      .label {
+        font-size: 20px;
+      }
+
+      .button {
+        padding: 14px 28px;
+        font-size: 18px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <canvas id="particles"></canvas>
+
+  <div class="card" role="main" aria-label="Подтверждение, что вы не робот">
+    <h2>Подтвердите, что вы не бот</h2>
+    <div class="checkbox-wrap" id="captcha" role="checkbox" tabindex="0" aria-checked="false" aria-labelledby="label">
+      <div class="checkbox" id="checkbox">
+        <div class="checkmark"></div>
+      </div>
+      <div class="label" id="label">Я не робот</div>
+    </div>
+    <button class="button" id="button">Подтвердить</button>
+    <div class="status" id="status" aria-live="polite"></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vanilla-tilt/1.8.1/vanilla-tilt.min.js"></script>
+  <script>
+    // Particle Background
+    const canvas = document.getElementById('particles');
+    const ctx = canvas.getContext('2d');
+    let width = (canvas.width = window.innerWidth);
+    let height = (canvas.height = window.innerHeight);
+
+    const particles = [];
+    const particleCount = 50;
+
+    class Particle {
+      constructor() {
+        this.reset();
+      }
+
+      reset() {
+        this.x = Math.random() * width;
+        this.y = Math.random() * height;
+        this.size = Math.random() * 2 + 1;
+        this.speedX = (Math.random() - 0.5) * 0.3;
+        this.speedY = (Math.random() - 0.5) * 0.3;
+        this.opacity = Math.random() * 0.5 + 0.2;
+      }
+
+      update() {
+        this.x += this.speedX;
+        this.y += this.speedY;
+        if (this.x < 0 || this.x > width || this.y < 0 || this.y > height) {
+          this.reset();
+        }
+      }
+
+      draw() {
+        ctx.beginPath();
+        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(168, 85, 247, ${this.opacity})`;
+        ctx.fill();
+      }
+    }
+
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+
+    function animateParticles() {
+      ctx.clearRect(0, 0, width, height);
+      for (const particle of particles) {
+        particle.update();
+        particle.draw();
+      }
+      requestAnimationFrame(animateParticles);
+    }
+
+    animateParticles();
+
+    window.addEventListener('resize', () => {
+      width = canvas.width = window.innerWidth;
+      height = canvas.height = window.innerHeight;
+    });
+
+    // Card Tilt Effect
+    const card = document.querySelector('.card');
+    if (card) {
+      VanillaTilt.init(card, {
+        max: 15,
+        speed: 400,
+        glare: true,
+        'max-glare': 0.3,
+      });
+    }
+
+    // CAPTCHA Logic
+    const checkbox = document.getElementById('checkbox');
+    const status = document.getElementById('status');
+    const captcha = document.getElementById('captcha');
+    const button = document.getElementById('button');
+
+    function toggleCheck() {
+      if (checkbox.classList.contains('checked')) return;
+
+      checkbox.classList.add('checked');
+      captcha.setAttribute('aria-checked', 'true');
+      status.textContent = 'Проверка...';
+      status.classList.add('visible');
+
+      setTimeout(() => {
+        status.textContent = '✅ Успешно! Перенаправление...';
+        status.classList.add('success');
+
+        setTimeout(() => {
+          window.location.href = 'site.html';
+        }, 1500);
+      }, 1600);
+    }
+
+    if (captcha && button) {
+      captcha.addEventListener('click', toggleCheck);
+      button.addEventListener('click', toggleCheck);
+      captcha.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggleCheck();
+        }
+      });
+      button.addEventListener('keydown', (e) => {
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          toggleCheck();
+        }
+      });
+    }
+  </script>
+</body>
+</html>
